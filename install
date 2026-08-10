@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+main() {
+    local pkg
+    for pkg in mpv htop vim kitty; do
+        ask-symlink "$pkg" "$HOME/.config/$pkg"
+    done
+}
+
+YES=false
+ARGS_BAD=false
+while getopts y getopt_arg; do
+    case "$getopt_arg" in
+    y)
+        YES=true
+        ;;
+    '?' | :)
+        ARGS_BAD=true
+        ;;
+    esac
+done
+$ARGS_BAD && fatal "bad cmdline args"
+shift $((OPTIND - 1))
+
+ask-yn() {
+    $YES && return 0
+
+    local yn
+    while read -r -p "? [yN]: " yn; do
+        [[ $yn =~ [Yy].* ]] && return 0
+        [[ $yn =~ [Nn].* ]] && return 1
+    done
+}
+
+ask-symlink() {
+    local target=$1
+    local link_name=$2
+    echo -n "symlink $link_name to $target"
+    ask-yn && {
+        mkdir -p "$(dirname "$link_name")"
+        ln -sfT "$(realpath "$target")" "$link_name"
+    }
+    $YES && echo
+}
+
+(return &>/dev/null) || {
+    cd "$(realpath "$(dirname "$0")")" || exit 1
+    main
+}

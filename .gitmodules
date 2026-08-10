@@ -1,0 +1,4 @@
+[submodule "nvim"]
+	path = nvim
+	url = https://codeberg.org/kotanys/nvim-config.git
+    branch = master

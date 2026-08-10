@@ -1,0 +1,24 @@
+set nocompatible
+
+colorscheme mysorbet
+set nu rnu
+
+set mouse=a
+
+set showcmd
+
+set autoindent
+syntax on
+filetype plugin indent on
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set ignorecase
+set smartcase
+set incsearch
+
+if has('gui')
+    set guioptions -=m
+    set guioptions -=T
+endif
+
