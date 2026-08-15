@@ -16,9 +16,13 @@ set expandtab
 set ignorecase
 set smartcase
 set incsearch
+set nowrap
 
 if has('gui')
     set guioptions -=m
     set guioptions -=T
+    let &guifont="CaskaydiaCove Nerd Font Mono 14"
 endif
 
+let g:mapleader = ' '
+nnoremap <Leader>vw <cmd>set invwrap<CR>

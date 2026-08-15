@@ -2,9 +2,13 @@
 
 main() {
     local pkg
-    for pkg in mpv htop vim kitty; do
+    for pkg in mpv vim kitty; do
         ask-symlink "$pkg" "$HOME/.config/$pkg"
     done
+
+    ask-symlink bashrc ~/.bashrc
+
+    ask-copy htop/htoprc ~/.config/htop/htoprc
 }
 
 YES=false
@@ -28,7 +32,7 @@ ask-yn() {
     local yn
     while read -r -p "? [yN]: " yn; do
         [[ $yn =~ [Yy].* ]] && return 0
-        [[ $yn =~ [Nn].* ]] && return 1
+        [[ $yn =~ [Nn].* || -z $yn ]] && return 1
     done
 }
 
@@ -38,7 +42,18 @@ ask-symlink() {
     echo -n "symlink $link_name to $target"
     ask-yn && {
         mkdir -p "$(dirname "$link_name")"
-        ln -sfT "$(realpath "$target")" "$link_name"
+        ln -sf "$(realpath "$target")" "$link_name"
+    }
+    $YES && echo
+}
+
+ask-copy() {
+    local source=$1
+    local target=$2
+    echo -n "copy $source to $target"
+    ask-yn && {
+        mkdir -p "$(dirname "$target")"
+        cp -rL "$source" "$target"
     }
     $YES && echo
 }

@@ -1,4 +1,10 @@
 [submodule "nvim"]
 	path = nvim
 	url = https://codeberg.org/kotanys/nvim-config.git
-    branch = master
+	branch = master
+[submodule "XCompose"]
+	path = XCompose
+	url = https://codeberg.org/kotanys/XCompose.git
+	branch = main
+
+# vim: noet
