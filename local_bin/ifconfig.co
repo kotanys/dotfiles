@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# ifconfig.co
+# Prints current ip address by curling ifconfig.co
+
+command -v curl >/dev/null || {
+    echo "fatal: curl not installed"
+    exit 1
+} >&2
+
+case "$1" in
+-v)
+    curl -sS ifconfig.co --header 'Accept: application/json'
+    echo
+    ;;
+"")
+    curl -sS ifconfig.co
+    ;;
+*)
+    echo "unknown argument: $1" >&2
+    exit 2
+esac

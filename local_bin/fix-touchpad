@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Restarts the touchpad. Should be run as root most likely.
+# Copy to /usr/local/bin/ and either make it suid or add this to sudoers:
+# 
+#  %wheel  ALL=(root)  NOPASSWD: /usr/local/bin/fix-touchpad  
+
+set -xe
+/sbin/rmmod hid_multitouch
+/sbin/modprobe hid_multitouch

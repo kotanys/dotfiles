@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# toggle_dnd
+# Toggle Do Not Disturb for GNOME
+
+gsettings set org.gnome.desktop.notifications show-banners "$(
+    DND_BOOL=$(gsettings get org.gnome.desktop.notifications show-banners)
+    [ "$DND_BOOL" = true ] && echo false || echo true
+)"

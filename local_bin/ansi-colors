@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+# Source - https://stackoverflow.com/a/33206814
+# Posted by Richard, modified by community. See post 'Timeline' for change history
+# Retrieved 2026-05-14, License - CC BY-SA 4.0
+
+print(r"\033[<N>m                        - Set color to N")
+for i in range(30, 37 + 1):
+    print("\033[%dm%d \033[%dm%d\t" % (i, i, i + 60, i + 60), end="")
+    if i in (33, 37):
+        print()
+
+print("\033[0m")
+print(r"\033[39m\033[49m                 - Reset color")
+print(r"\033[2K                          - Clear Line")
+print(r"\033[<L>;<C>H or \033[<L>;<C>f   - Put the cursor at line L and column C.")
+print(r"\033[<N>A                        - Move the cursor up N lines")
+print(r"\033[<N>B                        - Move the cursor down N lines")
+print(r"\033[<N>C                        - Move the cursor forward N columns")
+print(r"\033[<N>D                        - Move the cursor backward N columns\n")
+print(r"\033[2J                          - Clear the screen, move to (0,0)")
+print(r"\033[K                           - Erase to end of line")
+print(r"\033[s                           - Save cursor position")
+print(r"\033[u                           - Restore cursor position\n")
+print(r"\033[4m                          - Underline on")
+print(r"\033[24m                         - Underline off\n")
+print(r"\033[1m                          - Bold on")
+print(r"\033[21m                         - Bold off")

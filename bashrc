@@ -28,7 +28,6 @@ fi
 PS1='\[\033[01;32m\]\u'"$PS1HOSTNAME"':\[\033[01;34m\]\w\[\033[00m\]\$ '
 unset PS1HOSTNAME
 
-export EDITOR="$(which nvim)"
 IGNOREEOF=1
 
 # make less show colors (see less(1))
@@ -69,6 +68,7 @@ if [[ -x ~/opt/install.bash ]]; then
 fi
 
 export PATH
+export EDITOR="$(which nvim)"
 
 # fortune+cowsay meme
 if [[ ! -f ~/.local/state/cowsay-meme-disable ]] &&

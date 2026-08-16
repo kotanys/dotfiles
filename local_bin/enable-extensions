@@ -1,0 +1,3 @@
+#!/bin/sh
+set -xe
+gsettings set org.gnome.shell disable-user-extensions false

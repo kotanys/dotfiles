@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# This script creates a copy of Qalculate's desktop file
+# masquerading as gnome-calculator in order for
+# the Calculator key on the keyboard to open Qalculate.
+
+set -xe
+cp -fL /usr/share/applications/qalculate-gtk.desktop \
+    ~/.local/share/applications/org.gnome.Calculator.desktop
+printf '\nNoDisplay=true\n' >> ~/.local/share/applications/org.gnome.Calculator.desktop
