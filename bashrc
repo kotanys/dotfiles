@@ -49,10 +49,14 @@ fi
 # eval "$(tldr --print-completion bash)"
 
 # zoxide config
-eval "$(zoxide init bash)"
+if command -v zoxide &>/dev/null; then
+    eval "$(zoxide init bash)"
+fi
 
 # fzf config
-FZF_ALT_C_COMMAND='' eval "$(fzf --bash)"
+if command -v fzf &>/dev/null; then
+    FZF_ALT_C_COMMAND='' eval "$(fzf --bash)"
+fi
 
 # PATHing
 export GOPATH="$HOME/.local/share/go"
@@ -169,12 +173,14 @@ gcm() {
 }
 
 # setup completion for git aliases
-source /usr/share/bash-completion/completions/git
-__git_complete gad git_add
-__git_complete gcm git_commit
-__git_complete gst git_status
-__git_complete glg git_log
-__git_complete gla git_log
-__git_complete gph git_push
-__git_complete gch git_checkout
-__git_complete amend git_commit
+if [[ -r /usr/share/bash-completion/completions/git ]]; then
+    source /usr/share/bash-completion/completions/git
+    __git_complete gad git_add
+    __git_complete gcm git_commit
+    __git_complete gst git_status
+    __git_complete glg git_log
+    __git_complete gla git_log
+    __git_complete gph git_push
+    __git_complete gch git_checkout
+    __git_complete amend git_commit
+fi
