@@ -1,22 +1,86 @@
 #!/usr/bin/env bash
 
+# Dotfile installer
+# Invoking `./install ACTION` calls install_ACTION function
+# if it exists or gives of a warning
+#
+# To extend, define install_ACTION functions or
+# append to following arrays:
+
+# Create a symlink at VALUE targeting KEY
+declare -A LN_PKGS=(
+    [mpv]="$HOME/.config/mpv"
+    [vim]="$HOME/.config/vim"
+    [kitty]="$HOME/.config/kitty"
+    [bashrc]="$HOME/.bashrc"
+)
+# Copy KEY to VALUE
+declare -A COPY_PKGS=(
+    [htoprc]="$HOME/.config/htop/htoprc"
+)
+
 main() {
-    local pkg
-    for pkg in mpv vim kitty; do
-        ask-symlink "$pkg" "$HOME/.config/$pkg"
+    local install_actions=()
+    mapfile -t install_actions < <(
+        declare -F |
+            sed -n 's/declare -f install_\(.*\)$/\1/p' |
+            while read -r func; do
+                echo "$func"
+            done
+    )
+
+    if $HELP; then
+        echo   "$0: $0 [options...] [actions...] "
+        echo   '    Options:'
+        echo  $'      -y\tsay yes to all prompts'
+        echo  $'      -h\tprint this help and exit'
+        echo
+        echo   '    Actions:'
+        printf '      %s\n' "${install_actions[@]}"
+        return
+    fi
+
+    local action
+    for action in "$@"; do
+        if printf "%s\0" "${install_actions[@]}" | grep -Fxqz -- "$action"; then
+            eval "install_$action"
+        else
+            echo "warning: can't install '$action'" >&2
+        fi
     done
-
-    ask-symlink bashrc ~/.bashrc
-
-    ask-copy htop/htoprc ~/.config/htop/htoprc
 }
 
+fatal() {
+    echo "$*"
+    exit 1
+} >&2
+
+for pkg in "${!LN_PKGS[@]}"; do
+    eval "
+        install_$pkg() {
+            ask-symlink \"$pkg\" \"${LN_PKGS[$pkg]}\"
+        }
+    "
+done
+for pkg in "${!COPY_PKGS[@]}"; do
+    eval "
+        install_$pkg() {
+            ask-copy \"$pkg\" \"${COPY_PKGS[$pkg]}\"
+        }
+    "
+done
+unset pkg
+
 YES=false
+HELP=false
 ARGS_BAD=false
-while getopts y getopt_arg; do
+while getopts yh getopt_arg; do
     case "$getopt_arg" in
     y)
         YES=true
+        ;;
+    h)
+        HELP=true
         ;;
     '?' | :)
         ARGS_BAD=true
@@ -60,5 +124,5 @@ ask-copy() {
 
 (return &>/dev/null) || {
     cd "$(realpath "$(dirname "$0")")" || exit 1
-    main
+    main "$@"
 }
