@@ -2,7 +2,7 @@
 
 # Dotfile installer
 # Invoking `./install ACTION` calls install_ACTION function
-# if it exists or gives of a warning
+# if it exists or gives off a warning
 #
 # To extend, define install_ACTION functions or
 # append to following arrays:
@@ -21,12 +21,8 @@ declare -A COPY_PKGS=(
 
 main() {
     local install_actions=()
-    mapfile -t install_actions < <(
-        declare -F |
-            sed -n 's/declare -f install_\(.*\)$/\1/p' |
-            while read -r func; do
-                echo "$func"
-            done
+    IFS=$'\n' read -d'' -r -a install_actions < <(
+        declare -F | sed -n 's/declare -f install_\(.*\)$/\1/p'
     )
 
     if $HELP; then
