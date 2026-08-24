@@ -33,7 +33,7 @@ main() {
         echo  $'      -h\tprint this help and exit'
         echo
         echo   '    Actions:'
-        printf '      %s\n' "${install_actions[@]}"
+        printf '      %s\n' "${install_actions[@]}" | sort
         return
     fi
 
@@ -120,6 +120,6 @@ ask-copy() {
 }
 
 (return &>/dev/null) || {
-    cd "$(realpath "$(dirname "$0")")" || exit 1
+    cd "$(dirname "$(realpath "$0")")" || exit 1
     main "$@"
 }
