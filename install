@@ -21,7 +21,7 @@ declare -A COPY_PKGS=(
 
 main() {
     local install_actions=()
-    IFS=$'\n' read -d'' -r -a install_actions < <(
+    IFS=$'\n' read -d '' -r -a install_actions < <(
         declare -F | sed -n 's/declare -f install_\(.*\)$/\1/p'
     )
 
