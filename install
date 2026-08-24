@@ -26,7 +26,7 @@ main() {
         declare -F | sed -n 's/declare -f install_\(.*\)$/\1/p'
     )
 
-    if $HELP; then
+    if $HELP || (( "$#" == 0 )); then
         echo   "$0: $0 [options...] [actions...] "
         echo   '    Options:'
         echo  $'      -y\tsay yes to all prompts'
