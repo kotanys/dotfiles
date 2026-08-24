@@ -13,6 +13,7 @@ declare -A LN_PKGS=(
     [vim]="$HOME/.config/vim"
     [kitty]="$HOME/.config/kitty"
     [bashrc]="$HOME/.bashrc"
+    [skills]="$HOME/.config/opencode/skills"
 )
 # Copy KEY to VALUE
 declare -A COPY_PKGS=(
