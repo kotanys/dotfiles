@@ -68,6 +68,18 @@ for pkg in "${!COPY_PKGS[@]}"; do
 done
 unset pkg
 
+if command -v go &>/dev/null; then
+    install_turn_off_go_telemetry() {
+        echo -n "Turn off go telemetry"
+        ask-yn && {
+            mkdir -p "$HOME/.config/go/telemetry" && {
+                echo -n 'off '
+                date +%Y-%m-%d
+            } > "$HOME/.config/go/telemetry/mode"
+        }
+    }
+fi
+
 YES=false
 HELP=false
 ARGS_BAD=false

@@ -21,17 +21,15 @@ export HISTSIZE=5000
 
 shopt -s checkwinsize nullglob globstar histappend
 
-PS1HOSTNAME='@\h'
+ps1hostname='@\h'
 if [[ ! -r /etc/hostname ]] || [[ "$(cat /etc/hostname)" == kotanyspc ]]; then
-    PS1HOSTNAME=''
+    ps1hostname=''
 fi
-PS1='\[\033[01;32m\]\u'"$PS1HOSTNAME"':\[\033[01;34m\]\w\[\033[00m\]\$ '
-unset PS1HOSTNAME
+PS1='\[\033[01;32m\]\u'"$ps1hostname"':\[\033[01;34m\]\w\[\033[00m\]\$ '
+unset ps1hostname
 
 IGNOREEOF=1
 
-# make less show colors (see less(1))
-export LESS='-R'
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -58,20 +56,6 @@ if command -v fzf &>/dev/null; then
     FZF_ALT_C_COMMAND='' eval "$(fzf --bash)"
 fi
 
-# PATHing
-export GOPATH="$HOME/.local/share/go"
-if [[ -d "$GOPATH/bin" ]] && [[ ! "$PATH" =~ $GOPATH/bin ]]; then
-    PATH="$PATH:$GOPATH/bin"
-fi
-if [[ -d "$HOME/.dotnet/tools" ]] && [[ ! "$PATH" =~ $HOME/.dotnet/tools ]]; then
-    export POWERSHELL_TELEMETRY_OPTOUT=1
-    PATH="$PATH:$HOME/.dotnet/tools"
-fi
-if [[ -x ~/opt/install.bash ]]; then
-    PATH="$(~/opt/install.bash --path)$PATH"
-fi
-
-export PATH
 export EDITOR="$(which nvim)"
 
 # fortune+cowsay meme
@@ -146,6 +130,7 @@ alias :q='exit'
 
 alias mv='mv -v'
 alias cp='cp -v'
+alias rm='rm -v'
 alias ll='ls -alhF'
 
 if command -v nvim &>/dev/null; then
@@ -155,7 +140,7 @@ fi
 # git aliases
 alias gad='git add'
 alias gst='git status'
-alias glg='git log'
+alias glg='git log --pretty=oneline --abbrev-commit'
 alias gla='git log --graph --all'
 alias gph='git push'
 alias gphu='git push -u $(git remote | head -n1) $(git branch --show-current)'
