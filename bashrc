@@ -25,6 +25,14 @@ ps1hostname='@\h'
 if [[ ! -r /etc/hostname ]] || [[ "$(cat /etc/hostname)" == kotanyspc ]]; then
     ps1hostname=''
 fi
+_print_error_code_if_not_zero() {
+    local code=$?
+    ((code == 0)) || {
+        printf "\e[31;m%s\e[0;m " $code
+        return $code
+    }
+}
+PROMPT_COMMAND=(_print_error_code_if_not_zero)
 PS1='\[\033[01;32m\]\u'"$ps1hostname"':\[\033[01;34m\]\w\[\033[00m\]\$ '
 unset ps1hostname
 
