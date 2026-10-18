@@ -14,6 +14,7 @@ declare -A LN_PKGS=(
     [kitty]="$HOME/.config/kitty"
     [bashrc]="$HOME/.bashrc"
     [skills]="$HOME/.config/opencode/skills"
+    [nvim]="$HOME/.config/nvim"
 )
 # Copy KEY to VALUE
 declare -A COPY_PKGS=(
@@ -80,6 +81,20 @@ if command -v go &>/dev/null; then
     }
 fi
 
+install_xcompose() {
+    local composepath=$(realpath ./XCompose/XCompose)
+    composepath=${composepath/#"$HOME"/'%H'}
+    echo -n "Create ~/.XCompose that includes $composepath"
+    ask-yn && {
+        if [[ -e ~/.XCompose ]]; then
+            echo "Refusing to override ~/.XCompose" >&2
+            echo "include \"$composepath\""
+        else
+            echo "include \"$composepath\"" > ~/.XCompose
+        fi
+    }
+}
+
 YES=false
 HELP=false
 ARGS_BAD=false
@@ -100,7 +115,7 @@ $ARGS_BAD && fatal "bad cmdline args"
 shift $((OPTIND - 1))
 
 ask-yn() {
-    $YES && return 0
+    $YES && { echo; return 0; }
 
     local yn
     while read -r -p "? [yN]: " yn; do
