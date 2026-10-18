@@ -2,10 +2,10 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 if vim.env.TERM ~= 'linux' then
-    vim.cmd([[colorscheme mysorbet]])
+    vim.cmd.colorscheme("mysorbet")
 else
     -- in tty mysorbet doesn't look fine
-    vim.cmd([[colorscheme vim]])
+    vim.cmd.colorscheme("vim")
 end
 
 vim.opt.number = true
@@ -44,7 +44,7 @@ vim.opt.langmap = [[ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯЖЭХЪ
 vim.api.nvim_create_autocmd("VimResume", {
     group = vim.api.nvim_create_augroup("ResumeRedraw", { clear = true }),
     desc = "Redraw screen on resume",
-    callback = function() vim.cmd([[mode]]) end,
+    callback = function() vim.cmd.mode() end
 })
 
 vim.diagnostic.config({ virtual_text = true })

@@ -58,11 +58,11 @@ map('i', '<C-f>', '<cmd>norm l<CR>', { silent = true })
 map('n', 'n', 'nzzzv')
 map('n', 'N', 'Nzzzv')
 map('n', '<Leader>e', function()
-    vim.cmd [[
+    vim.cmd([[
         let current_file = expand("%:t")
         Explore
         call search('\V' . escape(current_file, '\'))
-    ]]
+    ]])
 end, { silent = true })
 
 vim.api.nvim_create_autocmd("LspAttach", {
