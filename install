@@ -15,6 +15,7 @@ declare -A LN_PKGS=(
     [bashrc]="$HOME/.bashrc"
     [skills]="$HOME/.config/opencode/skills"
     [nvim]="$HOME/.config/nvim"
+    [gdb]="$HOME/.config/gdb"
 )
 # Copy KEY to VALUE
 declare -A COPY_PKGS=(
@@ -133,6 +134,7 @@ ask-symlink() {
         ln -sf "$(realpath "$target")" "$link_name"
     }
     $YES && echo
+    return 0
 }
 
 ask-copy() {
@@ -144,6 +146,7 @@ ask-copy() {
         cp -rL "$source" "$target"
     }
     $YES && echo
+    return 0
 }
 
 (return &>/dev/null) || {

@@ -1,0 +1,3 @@
+set debuginfod enable off
+skip -gfi /usr/include/c++/*/bits/*
+skip -rfu ^testing::
