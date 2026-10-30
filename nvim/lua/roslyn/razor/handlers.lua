@@ -51,7 +51,24 @@ local function update_html(_err, res, _ctx)
     return false
 end
 
+local lspconfig_handlers = {
+    ["razor/updateHtml"] = update_html,
+    ["textDocument/documentColor"] = forward,
+    ["textDocument/colorPresentation"] = forward,
+    ["textDocument/foldingRange"] = forward,
+    ["textDocument/hover"] = forward,
+    ["textDocument/documentHighlight"] = forward,
+    ["textDocument/completion"] = forward,
+    ["textDocument/reference"] = forward,
+    ["textDocument/implementation"] = forward,
+    ["textDocument/definition"] = forward,
+    ["textDocument/signatureHelp"] = forward,
+    ["textDocument/formatting"] = forward,
+    ["textDocument/onTypeFormatting"] = forward,
+}
+
 return {
+    lspconfig_handlers = lspconfig_handlers,
     forward = forward,
     log = log,
     html_update = update_html,

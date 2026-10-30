@@ -126,15 +126,7 @@ function SetupLsps()
     -- roslyn_ls requires an html language server for razor support.
     -- roslyn.razor package used here is taken from
     -- https://github.com/seblyng/roslyn.nvim/tree/b4954e9/lua/roslyn/razor
-    local razor_handlers = require("roslyn.razor.handlers")
-    local old_on_attach_roslyn = vim.lsp.config.roslyn_ls.on_attach
     lsp_enable("roslyn_ls", {
-        on_attach = function(client, bufnr)
-            -- vim.diagnostic.enable(false, { bufnr = bufnr })
-            if old_on_attach_roslyn ~= nil then
-                old_on_attach_roslyn(client, bufnr)
-            end
-        end,
         filetypes = { "cs", "razor" },
         settings = {
             ["csharp|background_analysis"] = {
@@ -150,31 +142,14 @@ function SetupLsps()
                 }
             }
         },
-        handlers = {
-            ["razor/updateHtml"] = razor_handlers.html_update,
-            ["textDocument/documentColor"] = razor_handlers.forward,
-            ["textDocument/colorPresentation"] = razor_handlers.forward,
-            ["textDocument/foldingRange"] = razor_handlers.forward,
-            ["textDocument/hover"] = razor_handlers.forward,
-            ["textDocument/documentHighlight"] = razor_handlers.forward,
-            ["textDocument/completion"] = razor_handlers.forward,
-            ["textDocument/reference"] = razor_handlers.forward,
-            ["textDocument/implementation"] = razor_handlers.forward,
-            ["textDocument/definition"] = razor_handlers.forward,
-            ["textDocument/signatureHelp"] = razor_handlers.forward,
-            ["textDocument/formatting"] = razor_handlers.forward,
-            ["textDocument/onTypeFormatting"] = razor_handlers.forward,
-        }
+        handlers = require("roslyn.razor.handlers").lspconfig_handlers
     })
 
-
     lsp_enable("dockerls")
-
     lsp_enable("html")
     lsp_enable("jsonls")
     lsp_enable("cssls")
     lsp_enable("ts_ls")
-
     lsp_enable("tinymist")
 
     local old_on_attach_clangd = vim.lsp.config.clangd.on_attach
