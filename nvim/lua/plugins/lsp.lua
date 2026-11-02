@@ -192,9 +192,7 @@ return {
     {
         url = "https://codeberg.org/mfussenegger/nvim-jdtls",
         ft = { "java" },
-        enabled = function ()
-            return vim.fn.executable("jdtls") == 1
-        end,
+        enabled = vim.fn.executable("jdtls") == 1,
         config = function()
             local jdtls = require('jdtls')
             local lombok_jar = vim.fn.stdpath("data") .. "/mason/packages/jdtls/lombok.jar"
@@ -240,6 +238,7 @@ return {
     },
     {
         "ray-x/go.nvim",
+        enabled = vim.fn.executable("go") == 1,
         dependencies = {
             "ray-x/guihua.lua",
             "neovim/nvim-lspconfig",

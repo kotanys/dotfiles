@@ -31,4 +31,26 @@ return {
         "l1ike/vim1c",
         commit = "d32f09b",
     },
+    { -- Better-looking inline diagnostics
+        "rachartier/tiny-inline-diagnostic.nvim",
+        dependencies = { "neovim/nvim-lspconfig" },
+        config = function ()
+            require("tiny-inline-diagnostic").setup({
+                preset = "classic",
+                options = {
+                    multilines = {
+                        enabled = true,
+                        always_show = true,
+                        severity = { vim.diagnostic.severity.ERROR },
+                    },
+                    severity = { -- HINTs only visible in <C-w>d
+                        vim.diagnostic.severity.ERROR,
+                        vim.diagnostic.severity.WARN,
+                        vim.diagnostic.severity.INFO,
+                    },
+                },
+            })
+            vim.diagnostic.config({ virtual_text = false })
+        end
+    },
 }

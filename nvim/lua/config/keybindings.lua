@@ -3,15 +3,6 @@ local map = vim.keymap.set
 
 map('n', '<Leader>o', '<cmd>make!<CR>')
 
--- Choose virtual lines OR virtual text (View Lines)
-map({ 'n' }, '<Leader>vl', function()
-    local virt_lines_enabled = vim.diagnostic.config().virtual_lines
-    vim.diagnostic.config({
-        virtual_text = not not virt_lines_enabled,
-        virtual_lines = not virt_lines_enabled,
-    })
-end)
-
 -- Toggle wrap (View Wrap)
 map({ 'n' }, '<Leader>vw', function()
     vim.o.wrap = not vim.o.wrap
@@ -32,14 +23,6 @@ map('', 'q/', '')
 map('', 'q?', '')
 
 -- TODO integrate code_action with vim-repeat
--- map({ 'n', 'v' }, 'gra', function()
--- vim.lsp.buf.code_action({
--- -- code_action has 'title'
--- filter = function(code_action)
--- return true
--- end,
--- })
--- end)
 
 map({ 'n', 'x' }, 'q<CR>', 'q', { noremap = true })
 

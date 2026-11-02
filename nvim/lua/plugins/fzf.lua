@@ -1,9 +1,7 @@
 return {
     "ibhagwan/fzf-lua",
+    enabled = vim.fn.executable("fzf") == 1,
     lazy = false,
-    -- optional for icon support
-    -- dependencies = { "nvim-tree/nvim-web-devicons" },
-    -- or if using mini.icons/mini.nvim
     dependencies = { "echasnovski/mini.icons" },
     opts = {
         files = {
