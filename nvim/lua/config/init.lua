@@ -1,3 +1,3 @@
 require('config.lazy')
 require('config.keybindings')
-require('config.align')
+require('config.align').setup()
