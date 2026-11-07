@@ -1,7 +1,3 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
 # If not running interactively, don't do anything
 case $- in
 *i*) ;;
@@ -13,30 +9,36 @@ if [[ "$(cat /etc/hostname 2>/dev/null)" == toolbx ]] || [[ "$DISTROBOX_ENTER_PA
 fi
 
 export LC_ALL=en_US.UTF-8
+if command -v nvim &>/dev/null; then
+    export EDITOR=nvim
+elif command -v vim &>/dev/null; then
+    export EDITOR=vim
+fi
+
+export VISUAL=$EDITOR
 
 # don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-export HISTCONTROL=ignoreboth
-export HISTSIZE=5000
+HISTCONTROL=ignoreboth
+HISTSIZE=5000
+IGNOREEOF=1
 
 shopt -s checkwinsize nullglob globstar histappend
 
-ps1hostname='@\h'
-if [[ ! -r /etc/hostname ]] || [[ "$(cat /etc/hostname)" == kotanyspc ]]; then
-    ps1hostname=''
+if [[ -r /etc/hostname ]] && [[ "$(cat /etc/hostname)" != kotanyspc ]]; then
+    ps1hostname='@\h'
 fi
-_print_error_code_if_not_zero() {
-    local code=$?
-    ((code == 0)) || {
-        printf "\e[31;m%s\e[0;m " $code
-        return $code
-    }
-}
-PROMPT_COMMAND=(_print_error_code_if_not_zero)
-PS1='\[\033[01;32m\]\u'"$ps1hostname"':\[\033[01;34m\]\w\[\033[00m\]\$ '
-unset ps1hostname
+ps1errorcode='$(c=$?;((c))&&printf "\e[31;m%s\e[0;m " $c)'
 
-IGNOREEOF=1
+PS1="$ps1errorcode"'\[\033[01;32m\]\u'"${ps1hostname-}"':\[\033[01;34m\]\w\[\033[00m\]\$ '
+unset ps1hostname ps1errorcode
+
+# # Funny clock
+# while
+#     sleep 1 &&
+#     printf '\e7\e[2;%dH\e[1m%s\e[0m\e8' $((COLUMNS - 12)) "${ date +"  %H:%M:%S  "; }"
+# do
+#     :
+# done &
 
 
 # enable programmable completion features (you don't need to enable
@@ -50,40 +52,13 @@ if ! shopt -oq posix; then
     fi
 fi
 
-# tldr config
-# NOTE to future self - this shit doubles bash startup time (noticeable)
-# eval "$(tldr --print-completion bash)"
-
-# zoxide config
 if command -v zoxide &>/dev/null; then
     eval "$(zoxide init bash)"
 fi
 
-# fzf config
 if command -v fzf &>/dev/null; then
     FZF_ALT_C_COMMAND='' eval "$(fzf --bash)"
 fi
-
-export EDITOR="$(which nvim)"
-
-# fortune+cowsay meme
-if [[ ! -f ~/.local/state/cowsay-meme-disable ]] &&
-    [[ "$SHLVL" = 1 ]] &&
-    command -v fortune &>/dev/null &&
-    command -v cowsay &>/dev/null; then
-    fortune -sa | cowsay
-fi
-
-cowsay-enable-meme() {
-    if [[ -s ~/.local/state/cowsay-meme-disable ]]; then
-        echo "$HOME/.local/state/cowsay-meme-disable is not an empty file!" >&2
-        return 1
-    fi
-    rm -f ~/.local/state/cowsay-meme-disable
-}
-cowsay-disable-meme() {
-    touch ~/.local/state/cowsay-meme-disable
-}
 
 feline() {
     # A char-by-char `cat`. Useful for apps with no buffering.
@@ -130,7 +105,6 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias tree='tree -C'
 
-# for consistency with Vim's :mak[e]
 if command -v make &>/dev/null; then
     alias mak='make'
 fi
@@ -154,6 +128,8 @@ alias gph='git push'
 alias gphu='git push -u $(git remote | head -n1) $(git branch --show-current)'
 alias gch='git checkout'
 alias amend='git commit --amend'
+
+alias nolid='systemd-inhibit --what=handle-lid-switch sleep infinity'
 
 # prevent commands like gcm --amend
 gcm() {
