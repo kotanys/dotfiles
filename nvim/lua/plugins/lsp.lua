@@ -65,19 +65,24 @@ function SetupLsps()
         }
     })
 
+    local has_pses_bundle
     lsp_enable("powershell_es", {
         bundle_path = (function()
-            if require('mason-registry').is_installed('powershell-editor-services') then
-                return vim.env.HOME ..
-                    '/.local/share/nvim/mason/packages/powershell-editor-services/PowerShellEditorServices'
-            else
+            has_pses_bundle = require('mason-registry').is_installed('powershell-editor-services')
+            if has_pses_bundle then
+                return vim.fn.stdpath("data")
+                    .. '/mason/packages/powershell-editor-services/PowerShellEditorServices'
+            end
+        end)(),
+        on_init = function()
+            if not has_pses_bundle then
                 vim.notify(
                     "Can't find bundle path of powershell_es language server.\n" ..
                     "Install it via mason (powershell-editor-services) or modify lsp.lua.",
                     vim.log.levels.WARN
                 )
             end
-        end)(),
+        end,
         init_options = {
             enableProfileLoading = false,
         },
@@ -98,8 +103,6 @@ function SetupLsps()
             end
 
             -- Else, DO load Neovim's libraries
-
-            ---@diagnostic disable-next-line: param-type-mismatch
             client.config.settings.Lua = {
                 runtime = {
                     version = 'LuaJIT',

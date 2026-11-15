@@ -94,6 +94,19 @@ cas() {
     esac
 }
 
+if command -v flatpak &>/dev/null; then
+    print-flatpak-licenses() {
+        flatpak list --app |
+            cut -f2 |
+            xargs -n1 flatpak info |
+            grep -E 'ID:|License:' |
+            sed 'n; a \ ' | 
+            sed -E 's/^\s+//' |
+            grep --color -i -e 'proprietary' -e '^'
+    }
+fi
+
+
 # ~/.bashrc.local should be ignored by version control
 if [[ -f ~/.bashrc.local ]]; then
     source ~/.bashrc.local
@@ -130,6 +143,7 @@ alias gch='git checkout'
 alias amend='git commit --amend'
 
 alias nolid='systemd-inhibit --what=handle-lid-switch sleep infinity'
+alias unsymlink='cd "$(realpath .)"'
 
 # prevent commands like gcm --amend
 gcm() {
@@ -153,3 +167,10 @@ if [[ -r /usr/share/bash-completion/completions/git ]]; then
     __git_complete gch git_checkout
     __git_complete amend git_commit
 fi
+
+alias ды=ls
+alias дд=ll
+alias учше=exit
+alias св=cd
+alias сфе=cat
+alias мшь=vim

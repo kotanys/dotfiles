@@ -33,7 +33,7 @@ return {
     },
     { -- Better-looking inline diagnostics
         "rachartier/tiny-inline-diagnostic.nvim",
-        dependencies = { "neovim/nvim-lspconfig" },
+        dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-lint" },
         config = function ()
             require("tiny-inline-diagnostic").setup({
                 preset = "classic",

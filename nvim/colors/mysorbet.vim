@@ -36,3 +36,5 @@ hi link @markup.raw.markdown_inline String
 hi link @lsp.type.decorator.python Special
 
 hi link @property.json Statement
+
+hi link @keyword.debug.vhdl Statement

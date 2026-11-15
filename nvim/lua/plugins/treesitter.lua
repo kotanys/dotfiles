@@ -10,6 +10,7 @@ return {
                 "css",
                 "go",
                 "html",
+                "java",
                 "javascript",
                 "latex",
                 "lua",
@@ -20,6 +21,7 @@ return {
                 "razor",
                 "regex",
                 "typst",
+                "vhdl",
                 "vim",
                 "vimdoc",
             }
